@@ -1,1 +1,1 @@
-web: python pga_tour_wrapper.py
+web: python2 pga_tour_wrapper.py
