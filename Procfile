@@ -1,1 +1,1 @@
-web: gunicorn pga_tour_wrapper:app
+web: gunicorn -b :$PORT pga_tour_wrapper:app
