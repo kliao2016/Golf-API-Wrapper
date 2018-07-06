@@ -1,1 +1,1 @@
-web: python2 pga_tour_wrapper.py
+web: gunicorn pga_tour_wrapper:app
