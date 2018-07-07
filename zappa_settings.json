@@ -5,6 +5,7 @@
         "profile_name": "kliao36",
         "project_name": "kliao-pgatour-wrapper",
         "runtime": "python3.6",
+        "parameter_depth": "1",
         "s3_bucket": "kliao-pgatour-wrapper"
     }
 }
