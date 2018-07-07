@@ -2,6 +2,10 @@ from flask import Flask # Capital letter for class imports
 from flask_restful import Api, Resource, reqparse
 import requests # Make get requests
 from datetime import datetime
+import json
+
+app = Flask(__name__)
+api = Api(app)
 
 cur_tour_id = -1
 tour_id_url = "https://statdata.pgatour.com/r/current/message.json"
@@ -16,9 +20,6 @@ cur_tour_id = id_req_data['tid']
 cur_tourny_url = "https://statdata.pgatour.com/r/" + cur_tour_id + "/leaderboard-v2mini.json"
 cur_tourny_req = requests.get(cur_tourny_url)
 cur_tourny_data = cur_tourny_req.json()
-
-app = Flask(__name__)
-api = Api(app)
 
 # Wrapper of PGA API that formats data how I need it
 class Tournament(Resource):
@@ -36,6 +37,7 @@ class Tournament(Resource):
             return response, 200
         else:
             return "No Current Tournaments", 404
+
 
 # Helper function to change date format
 def generateDate(date):
@@ -76,4 +78,6 @@ def grabPlayerRounds(rounds):
 
 # Add API GET endpoint
 api.add_resource(Tournament, "/tournaments")
-app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(debug=True)

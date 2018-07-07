@@ -1,0 +1,10 @@
+{
+    "dev": {
+        "app_function": "main.app",
+        "aws_region": "us-east-1",
+        "profile_name": "kliao36",
+        "project_name": "kliao-pgatour-wrapper",
+        "runtime": "python3.6",
+        "s3_bucket": "kliao-pgatour-wrapper"
+    }
+}
