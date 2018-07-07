@@ -1,6 +1,6 @@
 {
     "dev": {
-        "app_function": "main.app",
+        "app_function": "pga_tour_wrapper.app",
         "aws_region": "us-east-1",
         "profile_name": "kliao36",
         "project_name": "kliao-pgatour-wrapper",
