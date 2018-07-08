@@ -22,11 +22,11 @@ cur_tourny_req = requests.get(cur_tourny_url)
 cur_tourny_data = cur_tourny_req.json()
 
 # Wrapper of PGA API that formats data how I need it
-@app.route('/')
+@app.route('/', methods=['GET'])
 def showTournament():
     return redirect(url_for('getTournament'))
 
-@app.route('/tournament')
+@app.route('/tournament', methods=['GET'])
 def getTournament():
     if cur_tour_id != -1:
         response = {}
@@ -41,7 +41,7 @@ def getTournament():
     else:
         return jsonify(dict(statusCode=404, body="No Current Tournaments"))
 
-@app.route('/players')
+@app.route('/players', methods=['GET'])
 def getPlayers():
     if cur_tour_id != -1:
         response = {}
@@ -50,7 +50,7 @@ def getPlayers():
     else:
         return jsonify(dict(statusCode=404, body="No Current Tournaments or Players"))
 
-@app.route('/players/<string:name>')
+@app.route('/players/<string:name>', methods=['GET'])
 def getPlayerWithName(name):
     if cur_tour_id != -1:
         for player in grabAllPlayers():
