@@ -1,4 +1,4 @@
-from flask import Flask # Capital letter for class imports
+from flask import Flask, jsonify, redirect, url_for # Capital letter for class imports
 from flask_restful import Api, Resource, reqparse
 import requests # Make get requests
 from datetime import datetime
@@ -22,21 +22,42 @@ cur_tourny_req = requests.get(cur_tourny_url)
 cur_tourny_data = cur_tourny_req.json()
 
 # Wrapper of PGA API that formats data how I need it
-class Tournament(Resource):
-    def get(self):
-        if cur_tour_id != -1:
-            response = {}
-            response['Tour'] = 'PGA Tour'
-            response['CurrentTournament'] = cur_tourny_data['debug']['tournament_in_schedule_file_name']
-            response['LastUpdated'] = datetime.strptime(cur_tourny_data['last_updated'], '%Y-%m-%dT%H:%M:%S').strftime('%m/%d/%Y at %I:%M%p EST')
-            response['Date'] = generateDate(cur_tourny_data['leaderboard']['start_date']) + " - " + generateDate(cur_tourny_data['leaderboard']['end_date'])
-            response['Rounds'] = cur_tourny_data['leaderboard']['total_rounds']
-            response['CurrentRound'] = cur_tourny_data['leaderboard']['current_round']
-            response['Course'] = cur_tourny_data['leaderboard']['courses'][0]['course_name']
-            response['Players'] = grabAllPlayers()
-            return response, 200
-        else:
-            return "No Current Tournaments", 404
+@app.route('/')
+def showTournament():
+    return redirect(url_for('getTournament'))
+
+@app.route('/tournament')
+def getTournament():
+    if cur_tour_id != -1:
+        response = {}
+        response['Tour'] = 'PGA Tour'
+        response['CurrentTournament'] = cur_tourny_data['debug']['tournament_in_schedule_file_name']
+        response['LastUpdated'] = datetime.strptime(cur_tourny_data['last_updated'], '%Y-%m-%dT%H:%M:%S').strftime('%m/%d/%Y at %I:%M%p EST')
+        response['Date'] = generateDate(cur_tourny_data['leaderboard']['start_date']) + " - " + generateDate(cur_tourny_data['leaderboard']['end_date'])
+        response['Rounds'] = cur_tourny_data['leaderboard']['total_rounds']
+        response['CurrentRound'] = cur_tourny_data['leaderboard']['current_round']
+        response['Course'] = cur_tourny_data['leaderboard']['courses'][0]['course_name']
+        return jsonify(response), 200
+    else:
+        return "No Current Tournaments", 404
+
+@app.route('/players')
+def getPlayers():
+    if cur_tour_id != -1:
+        response = {}
+        response['Players'] = grabAllPlayers()
+        return jsonify(response), 200
+    else:
+        return "No Current Tournaments or Players", 404
+
+@app.route('/players/<string:name>')
+def getPlayerWithName(name):
+    if cur_tour_id != -1:
+        for player in grabAllPlayers():
+            if player['Name'] == name:
+                return jsonify(player), 200
+
+        return "Player is not in the current tournament", 404
 
 
 # Helper function to change date format
@@ -75,9 +96,6 @@ def grabPlayerRounds(rounds):
         playerRounds.append(roundInfo)
 
     return playerRounds
-
-# Add API GET endpoint
-api.add_resource(Tournament, "/tournaments")
 
 if __name__ == "__main__":
     app.run(debug=True)

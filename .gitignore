@@ -1,2 +1,6 @@
 .env
 *.pyc
+.serverless
+venv
+*.yml
+*.json
