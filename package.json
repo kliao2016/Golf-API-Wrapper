@@ -1,0 +1,24 @@
+{
+  "name": "pga_tour_wrapper",
+  "version": "1.0.0",
+  "description": "A wrapper around the PGA Tour's internal API to be used for a custom mobile client. I do not own any of this data!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kliao2016/PGATour-API-Wrapper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kliao2016/PGATour-API-Wrapper/issues"
+  },
+  "homepage": "https://github.com/kliao2016/PGATour-API-Wrapper#readme",
+  "devDependencies": {
+    "serverless-python-requirements": "^4.1.0",
+    "serverless-wsgi": "^1.4.9"
+  }
+}

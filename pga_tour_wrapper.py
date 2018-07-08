@@ -37,27 +37,27 @@ def getTournament():
         response['Rounds'] = cur_tourny_data['leaderboard']['total_rounds']
         response['CurrentRound'] = cur_tourny_data['leaderboard']['current_round']
         response['Course'] = cur_tourny_data['leaderboard']['courses'][0]['course_name']
-        return jsonify(response), 200
+        return jsonify(dict(statusCode=200, body=response))
     else:
-        return "No Current Tournaments", 404
+        return jsonify(dict(statusCode=404, body="No Current Tournaments"))
 
 @app.route('/players')
 def getPlayers():
     if cur_tour_id != -1:
         response = {}
         response['Players'] = grabAllPlayers()
-        return jsonify(response), 200
+        return jsonify(dict(statusCode=200, body=response))
     else:
-        return "No Current Tournaments or Players", 404
+        return jsonify(dict(statusCode=404, body="No Current Tournaments or Players"))
 
 @app.route('/players/<string:name>')
 def getPlayerWithName(name):
     if cur_tour_id != -1:
         for player in grabAllPlayers():
             if player['Name'] == name:
-                return jsonify(player), 200
+                return jsonify(dict(statusCode=200, body=player))
 
-        return "Player is not in the current tournament", 404
+        return jsonify(dict(statusCode=404, body="Player is not in the current tournament"))
 
 
 # Helper function to change date format

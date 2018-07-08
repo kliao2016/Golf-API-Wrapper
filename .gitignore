@@ -1,7 +1,5 @@
-.env
 *.pyc
 .serverless
 venv
 *.yml
-*.json
 node_modules
