@@ -35,7 +35,7 @@ def getTournament():
         response['last_updated'] = datetime.strptime(cur_tourny_data['last_updated'], '%Y-%m-%dT%H:%M:%S').strftime('%m/%d/%Y at %I:%M%p EST')
         response['date'] = generateDate(cur_tourny_data['leaderboard']['start_date']) + " - " + generateDate(cur_tourny_data['leaderboard']['end_date'])
         response['rounds'] = cur_tourny_data['leaderboard']['total_rounds']
-        response['currentRound'] = cur_tourny_data['leaderboard']['current_round']
+        response['current_round'] = cur_tourny_data['leaderboard']['current_round']
         response['course'] = cur_tourny_data['leaderboard']['courses'][0]['course_name']
         return jsonify(dict(statusCode=200, body=response))
     else:
