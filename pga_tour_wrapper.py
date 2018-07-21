@@ -26,26 +26,26 @@ cur_tourny_data = cur_tourny_req.json()
 def showTournament():
     return redirect(url_for('getTournament'))
 
-@app.route('/tournament', methods=['GET'])
+@app.route('/tournament/', methods=['GET'])
 def getTournament():
     if cur_tour_id != -1:
         response = {}
-        response['Tour'] = 'PGA Tour'
-        response['CurrentTournament'] = cur_tourny_data['debug']['tournament_in_schedule_file_name']
-        response['LastUpdated'] = datetime.strptime(cur_tourny_data['last_updated'], '%Y-%m-%dT%H:%M:%S').strftime('%m/%d/%Y at %I:%M%p EST')
-        response['Date'] = generateDate(cur_tourny_data['leaderboard']['start_date']) + " - " + generateDate(cur_tourny_data['leaderboard']['end_date'])
-        response['Rounds'] = cur_tourny_data['leaderboard']['total_rounds']
-        response['CurrentRound'] = cur_tourny_data['leaderboard']['current_round']
-        response['Course'] = cur_tourny_data['leaderboard']['courses'][0]['course_name']
+        response['tour'] = 'PGA Tour'
+        response['current_tournament'] = cur_tourny_data['debug']['tournament_in_schedule_file_name']
+        response['last_updated'] = datetime.strptime(cur_tourny_data['last_updated'], '%Y-%m-%dT%H:%M:%S').strftime('%m/%d/%Y at %I:%M%p EST')
+        response['date'] = generateDate(cur_tourny_data['leaderboard']['start_date']) + " - " + generateDate(cur_tourny_data['leaderboard']['end_date'])
+        response['rounds'] = cur_tourny_data['leaderboard']['total_rounds']
+        response['currentRound'] = cur_tourny_data['leaderboard']['current_round']
+        response['course'] = cur_tourny_data['leaderboard']['courses'][0]['course_name']
         return jsonify(dict(statusCode=200, body=response))
     else:
         return jsonify(dict(statusCode=404, body="No Current Tournaments"))
 
-@app.route('/players', methods=['GET'])
+@app.route('/players/', methods=['GET'])
 def getPlayers():
     if cur_tour_id != -1:
         response = {}
-        response['Players'] = grabAllPlayers()
+        response['players'] = grabAllPlayers()
         return jsonify(dict(statusCode=200, body=response))
     else:
         return jsonify(dict(statusCode=404, body="No Current Tournaments or Players"))
@@ -54,7 +54,7 @@ def getPlayers():
 def getPlayerWithName(name):
     if cur_tour_id != -1:
         for player in grabAllPlayers():
-            if player['Name'] == name:
+            if player['name'] == name:
                 return jsonify(dict(statusCode=200, body=player))
 
         return jsonify(dict(statusCode=404, body="Player is not in the current tournament"))
@@ -70,18 +70,18 @@ def grabAllPlayers():
     allPlayers = []
     for player in cur_tourny_data['leaderboard']['players']:
         playerData = {}
-        playerData['Name'] = player['player_bio']['first_name'] + " " + player['player_bio']['last_name']
-        playerData['Position'] = player['current_position']
-        playerData['TodayScore'] = player['today']
-        playerData['TotalScore'] = player['total']
-        playerData['Thru'] = player['thru']
-        playerData['FedExRanking'] = player['rankings']['cup_rank']
-        playerData['FedExPoints'] = player['rankings']['cup_points']
-        playerData['ProjectedFedExRanking'] = player['rankings']['projected_cup_rank']
-        playerData['ProjectedFedExPoints'] = player['rankings']['projected_cup_points_total']
-        playerData['FedexTrailingBy'] = player['rankings']['cup_trailing']
-        playerData['TotalShots'] = player['total_strokes']
-        playerData['Rounds'] = grabPlayerRounds(player['rounds'])
+        playerData['name'] = player['player_bio']['first_name'] + " " + player['player_bio']['last_name']
+        playerData['position'] = player['current_position']
+        playerData['today_score'] = player['today']
+        playerData['total_score'] = player['total']
+        playerData['thru'] = player['thru']
+        playerData['fedex_ranking'] = player['rankings']['cup_rank']
+        playerData['fedex_points'] = player['rankings']['cup_points']
+        playerData['projected_fedex_ranking'] = player['rankings']['projected_cup_rank']
+        playerData['projected_fedex_points'] = player['rankings']['projected_cup_points_total']
+        playerData['fedex_trailing_by'] = player['rankings']['cup_trailing']
+        playerData['total_shots'] = player['total_strokes']
+        playerData['rounds'] = grabPlayerRounds(player['rounds'])
         allPlayers.append(playerData)
 
     return allPlayers
@@ -90,10 +90,7 @@ def grabAllPlayers():
 def grabPlayerRounds(rounds):
     playerRounds = []
     for x in range(0, len(rounds)):
-        roundInfo = {}
-        roundInfo['Round'] = rounds[x]['round_number']
-        roundInfo['Score'] = rounds[x]['strokes']
-        playerRounds.append(roundInfo)
+        playerRounds.append(rounds[x]['strokes'])
 
     return playerRounds
 
