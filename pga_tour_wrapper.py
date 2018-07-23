@@ -37,6 +37,7 @@ def getTournament():
         response['rounds'] = cur_tourny_data['leaderboard']['total_rounds']
         response['current_round'] = cur_tourny_data['leaderboard']['current_round']
         response['course'] = cur_tourny_data['leaderboard']['courses'][0]['course_name']
+        response['total_par'] = cur_tourny_data['leaderboard']['courses'][0]['par_total']
         return jsonify(dict(statusCode=200, body=response))
     else:
         return jsonify(dict(statusCode=404, body="No Current Tournaments"))
